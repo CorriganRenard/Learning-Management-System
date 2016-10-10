@@ -1,0 +1,301 @@
+﻿@using LMS_MVC.Models
+@model CourseListing
+@{
+    Layout = "~/Views/Shared/_CourseLayout.cshtml";
+    int count = 1;
+    }
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+    <div id="course_welcome" class="courses_welcome">
+        <h1>Welcome to The Tech Academy LMS</h1>
+       
+        <div class="progress in-place" id="scroller">
+            <div class="progress-bar" id="scroller1" role="progressbar"
+                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                 style="width: 0%; min-width:100px">
+                0% Complete
+            </div>
+        </div>
+        <div class="courses-welcome" id="width-property"> </div>
+        <p class="" id="welcome-para">Select from the following courses:</p>
+    </div>
+    <br />
+    <div class="container center course-list-container">
+
+        @foreach (var c in Model.CourseList)
+        {
+            <div class="card-block">
+                <div class="complete-content" id="complete-@count">
+
+                    <input type="checkbox" class="hide" name="CB" onchange="CountCheckedBoxes(this)" id="checkbox-@count" />
+                </div>
+                <a class="course-link" href="@Url.Action("DisplayCourse", new { courseSelection = c.FileName })">
+                    <div class="link-container">
+                        <h4 class="course_title">@c.Title</h4>
+                    </div>
+                 </a>
+            </div>
+            count++;
+       }
+    </div>
+
+    <script type="text/javascript">
+
+        //jquery to link checkboxes to glyphicons
+        document.addEventListener('DOMContentLoaded', function () {
+
+            $("#complete-1").click(function () {
+                if ($('#checkbox-1').is(':checked')) {
+                    $('#checkbox-1').prop('checked', false);
+                    $('#complete-1').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-1').prop('checked', true);
+                    $('#complete-1').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+
+            });
+            $("#complete-2").click(function () {
+                if ($('#checkbox-2').is(':checked')) {
+                    $('#checkbox-2').prop('checked', false);
+                    $('#complete-2').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-2').prop('checked', true);
+                    $('#complete-2').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+
+            });
+            $("#complete-3").click(function () {
+                if ($('#checkbox-3').is(':checked')) {
+                    $('#checkbox-3').prop('checked', false);
+                    $('#complete-3').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-3').prop('checked', true);
+                    $('#complete-3').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+
+            });
+            $("#complete-4").click(function () {
+                if ($('#checkbox-4').is(':checked')) {
+                    $('#checkbox-4').prop('checked', false);
+                    $('#complete-4').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-4').prop('checked', true);
+                    $('#complete-4').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+
+            });
+            $("#complete-5").click(function () {
+                if ($('#checkbox-5').is(':checked')) {
+                    $('#checkbox-5').prop('checked', false);
+                    $('#complete-5').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-5').prop('checked', true);
+                    $('#complete-5').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+            });
+            $("#complete-6").click(function () {
+                if ($('#checkbox-6').is(':checked')) {
+                    $('#checkbox-6').prop('checked', false);
+                    $('#complete-6').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-6').prop('checked', true);
+                    $('#complete-6').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+
+            });
+            $("#complete-7").click(function () {
+                if ($('#checkbox-7').is(':checked')) {
+                    $('#checkbox-7').prop('checked', false);
+                    $('#complete-7').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-7').prop('checked', true);
+                    $('#complete-7').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+
+            });
+            $("#complete-8").click(function () {
+                if ($('#checkbox-8').is(':checked')) {
+                    $('#checkbox-8').prop('checked', false);
+                    $('#complete-8').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-8').prop('checked', true);
+                    $('#complete-8').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+
+            });
+            $("#complete-9").click(function () {
+                if ($('#checkbox-9').is(':checked')) {
+                    $('#checkbox-9').prop('checked', false);
+                    $('#complete-9').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-9').prop('checked', true);
+                    $('#complete-9').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+
+            });
+            $("#complete-10").click(function () {
+                if ($('#checkbox-10').is(':checked')) {
+                    $('#checkbox-10').prop('checked', false);
+                    $('#complete-10').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-10').prop('checked', true);
+                    $('#complete-10').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+
+            });
+            $("#complete-11").click(function () {
+                if ($('#checkbox-11').is(':checked')) {
+                    $('#checkbox-11').prop('checked', false);
+                    $('#complete-11').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-11').prop('checked', true);
+                    $('#complete-11').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+
+            });
+            $("#complete-12").click(function () {
+                if ($('#checkbox-12').is(':checked')) {
+                    $('#checkbox-12').prop('checked', false);
+                    $('#complete-12').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-12').prop('checked', true);
+                    $('#complete-12').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+
+            });
+            $("#complete-13").click(function () {
+                if ($('#checkbox-13').is(':checked')) {
+                    $('#checkbox-13').prop('checked', false);
+                    $('#complete-13').removeClass('glyphicon-ok glyphicon');
+                }
+                else {
+                    $('#checkbox-13').prop('checked', true);
+                    $('#complete-13').addClass('glyphicon-ok glyphicon');
+                }
+                CountCheckedBoxes();
+
+            });
+        });
+
+        //Onload Function to retrieve states of checkboxes and Progress Bar from localStorage.
+        document.addEventListener('DOMContentLoaded', function () {
+
+            var StoredValueList = JSON.parse(localStorage.getItem("ValueList")) || {};
+            for (i = 0; i < StoredValueList.length; i++) {
+                if (StoredValueList[i] == 1) {
+                    document.querySelectorAll("input[type='checkbox']")[i].checked = true;
+                    //CR added query selector and function to initiate checkboxes on page load
+                    var el = document.querySelectorAll(".complete-content")[i];
+                    addClass(el, 'glyphicon-ok');
+                    addClass(el, 'glyphicon');
+
+                }
+            };
+
+            var StoredPBPct = JSON.parse(localStorage.getItem("PBPct"));
+            if (StoredPBPct == null) {
+                StoredPBPct = ["0%"];
+            }
+            $(".progress-bar").css("width", StoredPBPct);
+            $(".progress-bar").attr("aria-valuenow", StoredPBPct);
+            $(".progress-bar").text(StoredPBPct + " Complete");
+
+
+        }, false);
+
+        // Onclick Function to count checkboxes, set Progress Bar and save to localStorage.
+        function CountCheckedBoxes() {
+
+            var ValueList = [];
+            var CourseDays = [7, 1, 4, 3, 2, 7, 6, 13, 1, 18, 1, 10, 2];
+            var Count = 0;
+
+            $("input[type='checkbox']").each(function () {
+                var CBVal = (this.checked ? 1 : 0);
+                ValueList += (ValueList == [] ? CBVal : CBVal);
+            }
+            );
+
+            for (i = 0; i < ValueList.length; i++) {
+                if (ValueList[i] == 1) {
+                    Count = Count + CourseDays[i];
+                }
+            }
+
+            PBPct = Math.floor((Count / 75) * 100).toString() + "%";
+            $(".progress-bar").css("width", PBPct);
+            $(".progress-bar").attr("aria-valuenow", PBPct);
+            $(".progress-bar").text(PBPct + " Complete");
+
+            localStorage.setItem("ValueList", JSON.stringify(ValueList));
+            localStorage.setItem("PBPct", JSON.stringify(PBPct));
+        }
+
+        //CR Function to add class .checkbox to each box that is checked on page load
+        function addClass(el, className) {
+            if (el.classList) {
+                el.classList.add(className)
+            }
+            else if (!hasClass(el, className)) {
+                el.className += " " + className
+
+            }
+        }
+
+        //function to stick progress bar to top when scrolling down
+        document.addEventListener('DOMContentLoaded', function () {
+            $(window).scroll(function (e) {
+                var $el = $('#scroller');
+                var isPositionFixed = ($el.css('position') == 'fixed');
+                //if the window is scrolled past the progress bar - remove in-place class and add fixed class
+                if ($(this).scrollTop() > 163 && !isPositionFixed) {
+                    $('#scroller').removeClass('in-place');
+                    $('#scroller').addClass('fixed');
+                    $('#welcome-para').addClass('welcome-margin');
+                    $('#scroller').width($('#width-property').outerWidth());
+                }
+                //if the window is scrolled back up - remove the fixed class and add the in-place class
+                if ($(this).scrollTop() < 163 && isPositionFixed) {
+                    $('#scroller').removeClass('fixed');
+                    $('#scroller').addClass('in-place');
+                    $('#welcome-para').removeClass('welcome-margin');
+                }
+            });
+        });
+
+        //resize progress bar when window is resized to match title element
+        document.addEventListener('DOMContentLoaded', function () {
+            $(window).resize(function () {
+                $('#scroller').width($('#width-property').outerWidth());
+            });
+        });
+       
+    </script>

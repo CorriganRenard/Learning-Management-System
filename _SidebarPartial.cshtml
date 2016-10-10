@@ -1,0 +1,25 @@
+﻿@using LMS_MVC.Models
+@model CourseListing
+
+<div class="container center">
+
+    @foreach (var c in Model.CourseList)
+    {
+
+        <a href="@Url.Action("DisplayCourse", new { courseSelection = c.FileName })">
+
+            <div class="card-block">
+                <!-- <div id="card-block">-->
+
+                <h4 class="course_title">@c.Title</h4>
+
+
+            </div>
+
+        </a>
+    }
+
+
+</div>
+
+

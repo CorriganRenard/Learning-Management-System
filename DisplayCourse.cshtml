@@ -1,0 +1,243 @@
+﻿@using LMS_MVC.Models
+@using System.Linq;
+@model CourseIdentityViewModel
+
+@{
+    Layout = "~/Views/Shared/_CourseContentLayout.cshtml";
+ 
+}
+
+@{
+    ViewBag.Title = "Course Workspace";
+
+}
+<body >
+    <h2>@Model.CourseItems[0].elementText</h2>
+    <div class="container">
+        <div id="courseHolder">
+
+            <div class="progress">
+                <div class="progress-bar" role="progressbar"
+                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                     style="width: 100%; min-width:100px">
+                    100% Complete
+                </div>
+            </div>
+
+            <input type="button" name="backButtonUpper" class="backButton" value="Previous" onclick="updateItem('back');" />
+            <input type="button" name="fwdButtonUpper" class="fwdButton" value="Next" onclick="updateItem('next');" />
+            <div><br />Progress: You are on item <input id="itemNo" type="text" /> of @(Model.CourseItems.Count - 1);</div>
+
+            @foreach (var item in Model.CourseItems)
+            {
+                if (item.hasMarkup == true)
+                {
+                    <div id="itemDiv @item.Sequence" style="display:none; white-space:pre-wrap"><br />@(new HtmlString(item.elementText))</div>
+                }
+                else
+                {
+                    <div id="itemDiv @item.Sequence" style="display:none; white-space:pre-wrap"><br />@item.elementText</div>
+                }
+            }
+            <br />
+        </div>
+        <div id="essaySubmit">
+            <button type="button" id="mailEssayButton" name="mailEssayButton" onclick="sendMail();">Email Essay</button>
+        </div>
+        <br />
+        <div class="bottomCourseNavButtons">
+            <input type="button" name="backButtonLower" class="backButton" value="Previous" onclick="updateItem('back');" />
+            <input type="button" name="fwdButtonLower" class="fwdButton" value="Next" onclick="updateItem('next');" />
+        </div>
+    </div>
+    
+</body>
+<script type="text/javascript">
+
+    window.onload = function () {
+        //event listener for user enter new item/page
+        $("#itemNo").on("input", function(action){ updateItem("user", action.target.value) });
+        updateItem("init")
+        $("#itemNo").on("click", function () { this.select() });
+    };
+
+    function updateItem(action, userSelectItem) {
+      
+        var nextItem = 0;
+        if (action == "next") {
+            nextItem = 1;
+        } else if (action == "back") {
+            nextItem = -1;
+        } else if (action == "init") {
+            nextItem = 0;
+        } else if (action == "user") {
+            nextItem = userSelectItem;
+        }
+
+        // determine the userCounter value
+        var usrName = "@HttpContext.Current.User.Identity.Name";
+        var currentCourseItem = "@Model.CourseId";
+        var userCounter = usrName + currentCourseItem;
+        var new_value, current_value, progressPct;
+        var totalItems = @Model.CourseItems.Count() -1;
+
+        // get current value of userCounter (the current checksheet item, by Sequence)
+        if (action == "init") {
+            if (localStorage.getItem(userCounter) === null || isNaN(localStorage.getItem(userCounter)) || localStorage.getItem(userCounter) < 1) {
+                localStorage.setItem(userCounter, '0');
+                current_value = 0;
+                $(":input[name^='backButton']").attr('disabled', true);
+            } else {
+            current_value = parseInt(localStorage.getItem(userCounter));
+            }
+        } else {
+            current_value = parseInt(localStorage.getItem(userCounter));
+        }
+        //// increment or decrement the userCounter
+        if (action == "user") {
+            // validate user input
+            if (userSelectItem > totalItems || userSelectItem < 0 || !$.isNumeric(userSelectItem)) {
+                $("#itemNo").val(current_value);
+                $("#itemNo").select();
+                return;
+            } else {
+                new_value = userSelectItem;
+            }
+        } else {
+            new_value = parseInt(localStorage.getItem(userCounter)) + nextItem;
+        }
+        var startingItem = parseInt(localStorage.getItem(userCounter));
+
+        // enable/disable buttons as needed
+        if (action == "back") {
+            $(":input[name^='fwdButton']").attr('disabled', false);
+            if (new_value <= 0) {
+                new_value = 0;
+                window.localStorage.setItem(userCounter, new_value.toString());
+                $(":input[name^='backButton']").attr('disabled', true);
+            }
+        } else if (action == "next") {
+            $(":input[name^='backButton']").attr('disabled', false);
+            if (new_value >= totalItems) {
+                new_value = totalItems;
+                window.localStorage.setItem(userCounter, new_value.toString());
+                $(":input[name^='fwdButton']").attr('disabled', true);
+            }
+        } else if (action == "init" || action == "user") {
+            if (new_value <= 0) {
+                $(":input[name^='fwdButton']").attr('disabled', false);
+                $(":input[name^='backButton']").attr('disabled', true);
+            } else if (new_value >= totalItems) {
+                $(":input[name^='backButton']").attr('disabled', false);
+                $(":input[name^='fwdButton']").attr('disabled', true);
+            } else {
+                $(":input[name^='backButton']").attr('disabled', false);
+                $(":input[name^='fwdButton']").attr('disabled', false);
+            }
+        }
+
+        // get the div for the current item and hide it
+        if (action != "init") {
+            var divPrevious = document.getElementById('itemDiv ' + current_value);
+            divPrevious.style.cssText = 'display:none; white-space:pre-wrap';
+
+            // get the div for the next item descending or ascending and make it visible
+            var divOne = document.getElementById('itemDiv ' + new_value);
+            divOne.style.cssText = 'display:inline; white-space:pre-wrap';
+            //if there is a youtube link on the page, hide it. If link is not youtube, show the link
+            //if (divOne.innerHTML.includes("www.youtube.com") == false) {
+            //    $(divOne).find("a").show()
+            //} else {
+            //    $(divOne).find("a").hide()
+            //};
+            showEssayButton(divOne)
+            embedYoutube(divOne)
+
+        } else {
+            var divOne = document.getElementById('itemDiv ' + startingItem);
+            divOne.style.cssText = 'display:inline; white-space:pre-wrap';
+
+            showEssayButton(divOne)
+            embedYoutube(divOne)
+            //if there is a youtube link on the page, hide it. If link is not youtube, show the link
+            if (divOne.innerHTML.includes("www.youtube.com") == false) {
+                $(divOne).find("a").show()
+            } else {
+                $(divOne).find("a").hide()
+            };
+        }
+
+        // set the userCounter to the new item
+        window.localStorage.setItem(userCounter, new_value)
+        window.scrollTo(0, 0);
+        $("#itemNo").val(new_value);
+
+        // updated the progress bar
+        progressPct = Math.floor((new_value / totalItems)*100).toString()+"%";
+
+        $(".progress-bar").css("width", progressPct);
+        $(".progress-bar").attr("aria-valuenow", progressPct)
+        $(".progress-bar").text(progressPct+" Complete");
+    }
+    
+    function showEssayButton(divOne) {
+        // hide essay-submit box unless course item has 'ESSAY' in text
+        document.getElementById('essaySubmit').style.display = "none"
+        if (divOne.innerText.includes('ESSAY')) {
+            document.getElementById('essaySubmit').style.display = "block"
+            //if current item does not contain a text box add one
+            if (!divOne.innerHTML.includes("textarea")) {
+                var essayResponseField = $('<textarea id="essayresponse" placeholder="Write up your essay in this field." />');
+                $(divOne).append(essayResponseField);
+            }
+        }
+    }
+    
+    function sendMail() {
+        // opens user email client, auto fills subject and body according to course title and body of textbox
+        var subject = document.getElementById('itemDiv 0').innerText.replace('Course: ', '');
+        var itemno = $("#itemNo").val();
+        var body = $("#essayresponse").val();
+
+        console.log("Blaj")
+
+        if ("@Model.StudentType" == "Local") {
+            window.location.href = "mailto:" + "instructor@learncodinganywhere.com" + "?subject=" + subject + ", Item Number " + itemno + "&body=" + body;
+        }
+        if ("@Model.StudentType" == "Remote") {
+            window.location.href = "mailto:" + "remoteinstructor@learncodinganywhere.com" + "?subject=" + subject + ", Item Number " + itemno + "&body=" + body;
+        }      
+    }
+
+    function embedYoutube(divOne) {
+        // checks current course item for keywords "Watch this video" and youtube URL
+        if (divOne.innerHTML.includes('video') && divOne.innerHTML.includes('www.youtube.com')) {
+
+            if (divOne.innerHTML.includes('iframe') == false) {
+                // chops down current course item HTML to the youtube URL and gets video ID
+                var itemHTML = divOne.innerHTML.toString()
+                var vidHTML = itemHTML.substring(itemHTML.lastIndexOf('<a'), itemHTML.lastIndexOf('a>'))
+                var vidURL = vidHTML.split(' ')[1].replace('href="', '').replace('"', '')
+                var vidId = getVidId(vidURL);
+                if (vidId != 'error') {
+                    // frames video ID in embedded iframes, appends iframed video to end of current item
+                    var embedVid = '<iframe width="560" height="315" src="//www.youtube.com/embed/'
+                        + vidId + '" frameborder="0" allowfullscreen></iframe>';
+                    $(divOne).append($(embedVid));
+                }
+            }
+        }
+    }
+
+    function getVidId(url) {
+        // narrows youtube URL down to its ID
+        var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        var match = url.match(regExp);
+
+        if (match && match[2].length == 11) {
+            return match[2];
+        } else {
+            return 'error';
+        }
+    }
+</script>

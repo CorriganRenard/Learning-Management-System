@@ -1,0 +1,25 @@
+﻿
+
+@{ var count = 1;
+    var counttitle = 0;
+    string[] titles = {"Computer Basics", "Wordpress Course", "Software Dev", "Version Control", "HTML and CSS", "Database and SQL", "Basic Javascript", "Python Course", "Visual Studio", "C# Course", "Project Mgmt ", "Live Project", "Job Placement"};
+    string[] filenames = { "01_CBC", "02_WordPress", "03_Overview", "06_Version_Control", "04_HTML_CSS", "07_DB", "08_JavaScript", "09_Python", "05_VS", "10_CSharp", "11_PMB", "12_Live_Project", "13_Job_Placement" };
+
+    }
+@foreach (string f in filenames)
+{
+
+    <div class="card-block-sidebar">
+        <div class="complete-content-sidebar" id="complete-@count">
+
+            <input type="checkbox" class="hide" name="CB" id="checkbox-@count" />
+        </div>
+        <a class="course-link" href="@Url.Action("DisplayCourse", new { courseSelection = filenames[counttitle] })">
+            <div class="link-container-sidebar">
+                <h4 class="sidebar-course_title">@titles[counttitle]</h4>
+            </div>
+        </a>
+    </div>
+    count++;
+    counttitle++;
+}

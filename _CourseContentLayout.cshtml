@@ -1,0 +1,126 @@
+﻿@using LMS_MVC.Models
+@model CourseIdentityViewModel
+@{ var count = 1;}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - The Tech Academy LMS</title>
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/css")
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates" rel="stylesheet">
+
+    <meta name="description" content="The Tech Academy Learning Management System (LMS)" />
+</head>
+<body>
+    <header class="header-block navbar-static-top">
+        <div>
+            <a href="@Url.Action("Index","Home")"><img src="@Url.Content("/learningmanagementsystem/Images/_site_imgs/logo.png")" alt="Courses" class="navbar-brand site-header-logo brand-right" /></a>
+            <button id="nav-toggle" class="btn btn-default btn-toggle">
+                <span class="icon-text">Menu</span>
+                <span class="icon-bar top-bar top-bar-collapsed"></span>
+                <span class="icon-bar middle-bar middle-bar-collapsed"></span>
+                <span class="icon-bar bottom-bar bottom-bar-collapsed"></span>
+
+            </button>
+        </div>
+
+    </header>
+
+    <nav class="navbar-closed" id="navbar-collapse-jq">
+
+        <div class="nav-content">
+            <div class="center">
+                <ul class="nav navbar-nav">
+
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Courses", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Library", "Index", "Library")</li>
+                        <li>@Html.ActionLink("Daily Report", "DailyReport", "DailyReport")</li>
+                        <li><a href="https://support.procore.com/faq/how-do-i-change-my-web-browsers-default-email-client-for-mailto-links" target="_blank">Set Email</a></li>
+
+                    }
+
+
+
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+
+        </div>
+
+    </nav>
+    <div class="container sidebar-body-content">
+        
+ @Html.Partial("SidebarPartial")
+
+    </div>
+
+    <div class="container course-content-body-content data-holder">
+
+        @RenderBody()
+        <hr />
+
+        <footer>
+            <p>&copy; @DateTime.Now.Year - The Tech Academy</p>
+        </footer>
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <script>
+
+
+        $("#nav-toggle").click(function () {
+            if ($("#navbar-collapse-jq").hasClass("navbar-open") == true) {
+                /*jquery for navbar collapse*/
+                $('#navbar-collapse-jq').removeClass('navbar-open');
+                $('#navbar-collapse-jq').addClass('navbar-closed');
+                /*change toggle-button to have icon X*/
+                $('.top-bar').removeClass('top-bar-open');
+                $('.top-bar').addClass('top-bar-collapsed');
+                $('.middle-bar').removeClass('middle-bar-open');
+                $('.middle-bar').addClass('middle-bar-collapsed');
+                $('.bottom-bar').removeClass('bottom-bar-open');
+                $('.bottom-bar').addClass('bottom-bar-collapsed');
+
+            }
+            else if ($("#navbar-collapse-jq").hasClass("navbar-closed") == true) {
+                /*jquery for navbar drop-down*/
+                $('#navbar-collapse-jq').removeClass('navbar-closed');
+                $('#navbar-collapse-jq').addClass('navbar-open');
+                /*change toggle-button to have icon bar*/
+                $('.top-bar').removeClass('top-bar-collapsed');
+                $('.top-bar').addClass('top-bar-open');
+                $('.middle-bar').removeClass('middle-bar-collapsed');
+                $('.middle-bar').addClass('middle-bar-open');
+                $('.bottom-bar').removeClass('bottom-bar-collapsed');
+                $('.bottom-bar').addClass('bottom-bar-open');
+
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+
+            var StoredValueList = JSON.parse(localStorage.getItem("ValueList")) || {};
+            for (i = 0; i < StoredValueList.length; i++) {
+                if (StoredValueList[i] == 1) {
+                    document.querySelectorAll("input[type='checkbox']")[i].checked = true;
+                    //CR added query selector and function to initiate checkboxes on page load
+                    var el = document.querySelectorAll(".complete-content")[i];
+                    addClass(el, 'glyphicon-ok');
+                    addClass(el, 'glyphicon');
+
+                }
+            };
+        }, false);
+    </script>
+</body>
+</html>
+
